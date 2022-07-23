@@ -1,14 +1,18 @@
 import { useSelector } from "react-redux"
-import { Link } from "react-router-dom";
 
 import styled from "styled-components"
 import base from "../styles/base"
 
 import { getDayWeek, getFullDate } from "../const/getCurrentDate"
 
-import PartOfDayContainer from '../components/base/partOfDayWeather/partOfDayContainer'
-import CityAndCountryName from "../components/base/cityAndCountryName";
+import PartOfDayContainer from '../components/base/partOfDayWeather/PartOfDayContainer'
+import CityAndCountryName from "../components/base/CityAndCountryName";
 import ModalBox from "../components/common/ModalBox";
+import ErrorPage from "./Exceptions/ErrorPage";
+import LoadingPage from "./Exceptions/LoadingPage";
+import LinkBack from "../components/base/LinkBack"
+
+import { motion } from 'framer-motion'
 
 const ModalHeader = styled.div`
     display: flex;
@@ -50,7 +54,7 @@ const CurrentDate = styled.p`
     font-weight: 500;
     font-size: 22px;
     line-height: 26px;
-    color: #579AFF;
+    color: ${base.colors.darkBlue};
 
     @media(max-width: 559px) {
         font-size: 18px;
@@ -65,7 +69,7 @@ const CurrentTemperature = styled.p`
     font-weight: 400;
     font-size: 70px;
     line-height: 82px;
-    color: #FF5C00;
+    color: ${base.colors.darkOrange};
 
     @media(max-width: 660px) {
         font-size: 68px;
@@ -116,42 +120,6 @@ const Sun = styled.p`
     }
 `
 
-const LinkCont = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-
-    @media(max-width: 559px) {
-        display: block;
-    }
-    
-    .link {
-        display: block;
-        font-weight: 400;
-        font-size: 18px;
-        line-height: 21px;
-
-        text-decoration-line: underline;
-
-        color: #727272;
-        color: ${base.colors.blue};
-
-        @media(max-width: 660px) {
-            font-size: 16px;
-        }
-        @media(max-width: 559px) {
-            margin-bottom: 10px;
-        }
-    }
-
-    .link-back {
-        color: ${base.colors.grey};
-    }
-`
-
-
-
 export default function CurrentForecast() {
     const isLoading = useSelector((state) => state.weather.isLoading)
     const weatherData = useSelector((state) => state.weather.weatherData)
@@ -159,38 +127,36 @@ export default function CurrentForecast() {
     console.log(weatherData)
 
     return(
-        <ModalBox>
-            { (isLoading) && <p>Данные загружаются</p> }  {/*// TODO: добавить компонент для отрисовки загрузки  */}
-            {
-                (weatherData) ?
-                <>
-                    <ModalHeader>
-                        <CityDateCont>
-                            <div>
-                                <CityAndCountryName />
-                            </div>
-                            <CurrentDate>{ getDayWeek() }, { getFullDate() }</CurrentDate>
-                        </CityDateCont>
-                        <TempContainer>
-                            <CurrentTemperature> {Math.round(weatherData.current.temp_c)}°C</CurrentTemperature>
-                            <div>
-                                <Sun><b>Sunrise:</b> {weatherData.forecast.forecastday[0].astro.sunrise}</Sun>
-                                <Sun><b>Sunset:</b> {weatherData.forecast.forecastday[0].astro.sunset}</Sun>
-                            </div>
-                        </TempContainer>
-                    </ModalHeader>
-                    <PartOfDayContainer weather={weatherData} forecastDay={0}/>
-                    <LinkCont>
-                        <Link className="link link-back" to="/">
-                            Back to search page
-                        </Link>
-                        <Link className="link" to="/forecast-for-week">
-                            View forecast for the week
-                        </Link>
-                    </LinkCont>
-                </>
-                : console.log('Something wrong') //TODO: добавить компонент для отрисовки ошибки данных
-            }
-        </ModalBox>
+        <motion.div 
+            inital={{transform: 'translateX(0px)'}}
+            animate={{transform: 'translateX(0px)'}}
+            exit={{transform: 'translateX(-100%)'}}
+        >
+            <ModalBox>
+                {
+                    (weatherData) ?
+                    <>
+                        <ModalHeader>
+                            <CityDateCont>
+                                <div>
+                                    <CityAndCountryName />
+                                </div>
+                                <CurrentDate>{ getDayWeek() }, { getFullDate() }</CurrentDate>
+                            </CityDateCont>
+                            <TempContainer>
+                                <CurrentTemperature> {Math.round(weatherData.current.temp_c)}°C</CurrentTemperature>
+                                <div>
+                                    <Sun><b>Sunrise:</b> {weatherData.forecast.forecastday[0].astro.sunrise}</Sun>
+                                    <Sun><b>Sunset:</b> {weatherData.forecast.forecastday[0].astro.sunset}</Sun>
+                                </div>
+                            </TempContainer>
+                        </ModalHeader>
+                        <PartOfDayContainer weather={weatherData} forecastDay={0}/>
+                        <LinkBack />
+                    </>
+                    : (isLoading) ? <LoadingPage /> : <ErrorPage />
+                }
+            </ModalBox>
+        </motion.div>
     )
 }

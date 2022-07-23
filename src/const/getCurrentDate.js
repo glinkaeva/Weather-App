@@ -18,9 +18,3 @@ export function getFullDate() {
     let dateOutput = String(date.getDate()).padStart(2, '0') + '.' + String(date.getMonth() + 1).padStart(2, '0') + '.' + date.getFullYear();
     return dateOutput;
 }
-
-export function getDayAndMonth() {
-    let date = new Date();
-    let dateOutput = String(date.getDate()).padStart(2, '0') + '.' + String(date.getMonth() + 1).padStart(2, '0');
-    return dateOutput;
-}

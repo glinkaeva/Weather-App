@@ -7,7 +7,7 @@ const CityName = styled.p`
     font-size: 36px;
     line-height: 42px;
 
-    color: #1F9A00;
+    color: ${base.colors.darkGreen};
     margin-bottom: 20px;
 
     @media(max-width: 660px) {

@@ -52,7 +52,7 @@ const Temperature = styled.p`
     font-size: 42px;
     line-height: 36px;
 
-    color: #FF5C00;
+    color: ${base.colors.darkOrange};
 
     @media(max-width: 1280px) {
         font-size: 38px;

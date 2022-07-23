@@ -1,5 +1,5 @@
 import styled from "styled-components"
-import Wrapper from "./wrapper"
+import Wrapper from "../../styles/wrapper"
 
 const ModalWrapper = styled(Wrapper)`
     display: flex;

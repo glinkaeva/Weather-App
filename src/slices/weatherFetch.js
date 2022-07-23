@@ -14,13 +14,11 @@ export const fetchData = createAsyncThunk(
     'weather/fetch', async( city, { rejectWithValue }) => {
         try {
             const res = await fetch(`${BASE_URL}${FORECAST}?${KEY}&q=${city}&${DAY}&aqi=no&alerts=no`)
-            const json = await res.json()
-            console.log(json)
-            if(json.error) {
-                console.log('Error')
-                throw new Error(json.error.message)
+            const data = await res.json()
+            if(data.error) {
+                throw new Error(data.error.message)
             }
-            return json
+            return data
         }   
         catch (error) {
             return rejectWithValue(error.message)
@@ -32,9 +30,9 @@ export const weatherSlice = createSlice({
     name: 'weather',
     initialState,
     extraReducers: {
-        [fetchData.fulfilled]: (state, action) => {console.log('fulfilled'); state.weatherData = action.payload; state.isLoading = false},
-        [fetchData.pending]: (state) => {console.log('pending'); state.weatherData = null; state.isLoading = true},
-        [fetchData.rejected]: (state, action) => {console.log('rejected'); state.isLoading = false; state.error = action.payload},
+        [fetchData.fulfilled]: (state, action) => { state.weatherData = action.payload; state.isLoading = false; state.error = null },
+        [fetchData.pending]: (state) => { state.weatherData = null; state.isLoading = true; state.error = null },
+        [fetchData.rejected]: (state, action) => { state.isLoading = false; state.error = action.payload },
     }
 })
 

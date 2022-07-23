@@ -6,7 +6,9 @@ import styled from 'styled-components'
 import base from '../styles/base'
 
 import { fetchData } from '../slices/weatherFetch';
-import Wrapper from '../components/common/wrapper';
+import Wrapper from '../styles/wrapper';
+
+import { motion } from 'framer-motion'
 
 const Text = styled.p`
     color: ${base.colors.white};
@@ -73,8 +75,24 @@ const Input = styled.input`
     border-radius: 40px;
     text-transform: capitalize;
 
+    outline: none;
+    transition: .5s;
+
     &::placeholder {
         text-transform: initial;
+    }
+
+    &:focus {
+        animation: focusInput 1s 1;
+        
+        @keyframes focusInput {
+            50% {
+                transform: scale(1.03);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
     }
 
     @media(max-width: 768px) {
@@ -102,6 +120,11 @@ const Button = styled.button`
     border-radius: 40px;
     cursor: pointer;
 
+    transition: 0.5s;
+    &:hover {
+        transform: scale(1.03);
+    }
+
     @media(max-width: 768px) {
         font-size: 20px;
         padding: 0px 20px;
@@ -120,7 +143,7 @@ export default function Home() {
     const dispatch = useDispatch()
 
     const [city, setCity] = useState('')
-    const buttonRef = useRef('null')
+    const linkRef = useRef('null')
 
     // const history = unstable_HistoryRouter();
     // const currentForecastPage = () => {
@@ -128,29 +151,35 @@ export default function Home() {
     // }
 
     return (
-        <Wrapper>
-            <Text>Hello! Welcome to the <span style={{color: '#4314FF'}}>weather app</span>.</Text>
-            <Text>Start typing your city in the input field to find out the weather!</Text>
-            <InputCont>
-                <Input 
-                    placeholder='Start typing your city' 
-                    onChange={(e) => {
-                        setCity(e.target.value)
-                    }}
-                    // TODO: придумать как обработать нажатие кнопки ENTER с переходом на страницу
-                    // onKeyUp={(e) => {
-                    //     if(e.keyCode === 13){
-                    //         buttonRef.current.focus().onClick()
-                    //     }
-                    // }}
-                    value={city}
-                />
-                <Button ref={buttonRef} onClick={() => dispatch(fetchData(city))} to="/current-forecast">
-                    <Link key='/current-forecast' to="/current-forecast">
-                        Let&apos;s go
-                    </Link>
-                </Button>
-            </InputCont>
-        </Wrapper>
+        <motion.div 
+            inital={{transform: 'translateX(0px)'}}
+            animate={{transform: 'translateX(0px)'}}
+            exit={{transform: 'translateX(100%)'}}
+        >
+            <Wrapper>
+                <Text>Hello! Welcome to the <span style={{color: '#4314FF'}}>weather app</span>.</Text>
+                <Text>Start typing your city in the input field to find out the weather!</Text>
+                <InputCont>
+                    <Input 
+                        placeholder='Start typing your city' 
+                        onChange={(e) => {
+                            e.target.value = e.target.value.replace(/[.,;=+{}/\\[\]'"&%$#@!&*^|їіА-яа-я0-9]/g, '')
+                            setCity(e.target.value)
+                        }}
+                        onKeyUp={(e) => {
+                            if(e.keyCode === 13){
+                                linkRef.current.click()
+                            }
+                        }}
+                        value={city}
+                    />
+                    <Button>
+                        <Link ref={linkRef} onClick={() => dispatch(fetchData(city))} key='/current-forecast' to="/current-forecast" style={{display: 'block', width: '100%'}}>
+                            Let&apos;s go
+                        </Link>
+                    </Button>
+                </InputCont>
+            </Wrapper>
+        </motion.div>
     )
 }

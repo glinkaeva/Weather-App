@@ -1,6 +1,6 @@
 import base from "../../../styles/base";
 
-import PartOfDayItem from "./partOfDayItem";
+import PartOfDayItem from "./PartOfDayItem";
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Autoplay } from "swiper"

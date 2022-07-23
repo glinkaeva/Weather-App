@@ -7,7 +7,12 @@ const base = {
         grey: '#727272',
         black: '#2C2C2C',
 
-        white: '#ffffff'
+        white: '#ffffff',
+
+        darkGreen: '#1F9A00',
+        darkBlue: '#579AFF',
+        darkOrange: '#FF5C00',
+        
     },
     fonts: {
         searchPage: 'Gloria Hallelujah, cursive'
