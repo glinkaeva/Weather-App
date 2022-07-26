@@ -7,7 +7,6 @@ import LinkBack from "../../components/base/LinkBack";
 
 const Wrapper = styled.div`
     width: 100%;
-    min-height: 75vh;
 `
 
 const ErrorHeadline = styled.p`

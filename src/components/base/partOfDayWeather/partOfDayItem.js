@@ -45,6 +45,10 @@ const ItemTitle = styled.p`
     margin-bottom: 20px;
 
     color: ${props => props.color};
+
+    @media(max-width: 480px) {
+        margin-bottom: 15px;
+    }
 `
 
 const Temperature = styled.p`
@@ -96,6 +100,10 @@ const AdditionalInformation = styled.div`
         @media(max-width: 860px) {
             font-size: 20px;
         }
+    }
+
+    @media(max-width: 480px) {
+        margin-bottom: 5px;
     }
 `
 

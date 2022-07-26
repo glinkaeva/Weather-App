@@ -1,9 +1,10 @@
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 import styled from "styled-components"
 import base from "../styles/base"
 
 import { getDayWeek, getFullDate } from "../const/getCurrentDate"
+import { fetchData } from '../slices/weatherFetch';
 
 import PartOfDayContainer from '../components/base/partOfDayWeather/PartOfDayContainer'
 import CityAndCountryName from "../components/base/CityAndCountryName";
@@ -13,12 +14,18 @@ import LoadingPage from "./Exceptions/LoadingPage";
 import LinkBack from "../components/base/LinkBack"
 
 import { motion } from 'framer-motion'
+import { useEffect } from "react"
 
 const ModalHeader = styled.div`
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
     margin-bottom: 40px;
+
+    @media(max-width: 768px) {
+        display: block;
+        margin: 0 auto;
+    }
 
     @media(max-width: 480px) {
         margin-bottom: 20px;
@@ -62,6 +69,7 @@ const CurrentDate = styled.p`
     }
     @media(max-width: 480px) {
         text-align: left;
+        margin-bottom: 5px;
     }
 `
 
@@ -124,7 +132,14 @@ export default function CurrentForecast() {
     const isLoading = useSelector((state) => state.weather.isLoading)
     const weatherData = useSelector((state) => state.weather.weatherData)
 
-    console.log(weatherData)
+    const saveCity = localStorage.getItem('saveCity')
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        if(saveCity) {
+            dispatch(fetchData(saveCity))
+        }
+    }, [])
 
     return(
         <motion.div 

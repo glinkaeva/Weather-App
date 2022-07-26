@@ -17,6 +17,7 @@ const CityName = styled.p`
     @media(max-width: 480px) {
         font-size: 26px;
         line-height: 32px;
+        margin-bottom: 5px;
     }
 `
 const Country = styled.p`

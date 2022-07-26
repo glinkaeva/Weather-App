@@ -29,11 +29,10 @@ const LinkCont = styled.div`
         }
     }
 `
-
 export default function LinkBack() {
     return (
         <LinkCont>
-            <Link className="link" to="/">
+            <Link className="link" to="/" onClick={() => {localStorage.removeItem('saveCity')}}>
                 Back to search page
             </Link>
         </LinkCont>

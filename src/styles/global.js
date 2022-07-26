@@ -23,7 +23,8 @@ export default createGlobalStyle`
     }
 
     body {
-        overflow: hidden;
+        min-height: 130vh;
+        overflow-x: hidden;
         font-style: normal;
         font-family: 'Roboto', sans-serif;
         color: ${base.colors.black}

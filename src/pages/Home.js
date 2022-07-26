@@ -25,23 +25,10 @@ const Text = styled.p`
 
     @media(max-width: 768px) {
         font-size: 28px;
-        line-height: 1.5;
     }
 
     @media(max-width: 560px) {
         font-size: 24px;
-    }
-
-    @media(max-width: 480px) {
-        font-size: 20px;
-    }
-
-    @media(max-width: 385px) {
-        font-size: 18px;
-    }
-
-    @media(max-width: 340px) {
-        font-size: 16px;
     }
 `
 
@@ -145,16 +132,13 @@ export default function Home() {
     const [city, setCity] = useState('')
     const linkRef = useRef('null')
 
-    // const history = unstable_HistoryRouter();
-    // const currentForecastPage = () => {
-    //     history.push('/current-forecast')
-    // }
-
     return (
         <motion.div 
             inital={{transform: 'translateX(0px)'}}
             animate={{transform: 'translateX(0px)'}}
             exit={{transform: 'translateX(100%)'}}
+
+            style={{width: '100%', position: 'absolute'}}
         >
             <Wrapper>
                 <Text>Hello! Welcome to the <span style={{color: '#4314FF'}}>weather app</span>.</Text>
@@ -174,7 +158,7 @@ export default function Home() {
                         value={city}
                     />
                     <Button>
-                        <Link ref={linkRef} onClick={() => dispatch(fetchData(city))} key='/current-forecast' to="/current-forecast" style={{display: 'block', width: '100%'}}>
+                        <Link ref={linkRef} onClick={() => {dispatch(fetchData(city)); localStorage.setItem('saveCity', city)} } key='/current-forecast' to="/current-forecast" style={{display: 'block', width: '100%'}}>
                             Let&apos;s go
                         </Link>
                     </Button>

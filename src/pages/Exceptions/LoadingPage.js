@@ -10,7 +10,6 @@ const Wrapper = styled.div`
     align-items: center;
 `
 
-
 export default function LoadingPage() {
     return (
         <Wrapper>
